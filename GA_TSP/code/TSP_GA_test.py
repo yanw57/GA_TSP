@@ -10,6 +10,5 @@ for dataset in datasets:
     path = '../data/' + dataset
     # print(path)
     data = TSPLIBParser(path).parse()
-    aLifeCount = data['dimension']
-    tsp = TSP(data, aLifeCount)
+    tsp = TSP(data)
     tsp.run(500)

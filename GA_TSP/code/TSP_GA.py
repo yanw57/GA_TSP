@@ -6,9 +6,9 @@ import matplotlib.pyplot as plt
 
 
 class TSP(object):
-    def __init__(self, data, aLifeCount):
+    def __init__(self, data):
         self.initCitys(data)
-        self.lifeCount = aLifeCount
+        self.lifeCount = 200
         self.ga = GA(aCrossRate=0.7,
                      aMutationRate=0.02,
                      aLifeCount=self.lifeCount,
@@ -46,7 +46,7 @@ class TSP(object):
             bestdistance = self.distance(self.ga.best.gene)
             worstdistance = self.distance(self.ga.worst.gene)
             bestfitness.append(1.0 / bestdistance)
-            worstfitness.append(1.0/worstdistance)
+            worstfitness.append(1.0 / worstdistance)
             avg = self.ga.bounds / self.lifeCount
             avgfitness.append(avg)
             # print(("%d : %f") % (self.ga.generation, distance))
@@ -59,13 +59,37 @@ class TSP(object):
         # for i in self.ga.best.gene:
         #     print(self.citys[i][2])
 
+        # 数据图
+        x = []
+        y = []
+        for i in range(len(self.citys)):
+            coords = self.citys[i]
+            x.append(coords[0])
+            y.append(coords[1])
+        plt.scatter(x, y, marker='o', facecolor='none', color='red', s=40)
+        plt.title('GA_TSP_' + str(len(self.citys)))
+
+        plt.show()
+
+        # 最优解图示
+        best_x = []
+        best_y = []
+        for i in self.ga.best.gene:
+            best_x.append(self.citys[i][0])
+            best_y.append(self.citys[i][1])
+        plt.scatter(best_x, best_y, marker='o', facecolor='none', color='red', s=40)
+        plt.plot(best_x, best_y)
+        plt.title('GA_TSP_' + str(len(self.citys)))
+
+        plt.show()
+
+        # 适应度值随迭代次数变化图
         plt.plot(range(generation), bestfitness, 'r-', label="Maximum bestfitness")
         plt.plot(range(generation), avgfitness, 'g-', label="average bestfitness")
         plt.plot(range(generation), worstfitness, 'b-', label="Minimum bestfitness")
         plt.legend(loc="upper left")
         plt.xlabel('generation')
         plt.ylabel('BestFitness')
-        plt.title('GA_TSP_'+str(self.lifeCount))
+        plt.title('GA_TSP_' + str(len(self.citys)))
 
         plt.show()
-
